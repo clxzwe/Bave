@@ -48,6 +48,8 @@
             background-color: var(--apple-blue);
             border-radius: 980px;
             transition: all 0.2s ease;
+            cursor: pointer;
+            display: inline-block;
         }
 
         .btn-apple:hover {
@@ -75,12 +77,63 @@
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #1c1c1e;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px;
+            padding: 40px;
+            position: relative;
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-[#86868b] hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h2 class="text-3xl font-bold mb-2">Thank you for your interest.</h2>
+            <p class="text-[#86868b] mb-8">Please fill your info below to proceed.</p>
+            
+            <form id="checkoutForm" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-[#86868b] uppercase mb-1 ml-1">Name</label>
+                    <input type="text" required class="w-full bg-[#2c2c2e] border-none rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-[#86868b] uppercase mb-1 ml-1">Phone Number</label>
+                    <input type="tel" required class="w-full bg-[#2c2c2e] border-none rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500" placeholder="+91 XXXX-XXXXXX">
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="btn-apple w-full py-4 text-white font-bold text-lg">Send Details</button>
+                </div>
+            </form>
+            <div id="modalSuccess" class="hidden mt-6 text-green-400 font-medium">
+                We've received your info. Expect a call shortly!
+            </div>
+        </div>
+    </div>
+
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/yournumber" class="whatsapp-float">
+    <a href="https://wa.me/917003647494" class="whatsapp-float">
         <i class="fa-brands fa-whatsapp text-white text-3xl"></i>
     </a>
 
@@ -108,8 +161,8 @@
                 Professional websites delivered in 3 days. <br class="hidden md:block"> Starting at ₹5,999. In Kolkata.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#pricing" class="btn-apple text-white px-8 py-3 font-semibold text-lg min-w-[160px]">Buy</a>
-                <a href="https://wa.me/yournumber" class="text-blue-500 hover:underline text-lg font-medium">WhatsApp us &gt;</a>
+                <button onclick="openModal()" class="btn-apple text-white px-8 py-3 font-semibold text-lg min-w-[160px]">Buy</button>
+                <a href="https://wa.me/917003647494" class="text-blue-500 hover:underline text-lg font-medium">WhatsApp us &gt;</a>
             </div>
         </div>
         
@@ -159,19 +212,19 @@
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Starter</span>
                 <h4 class="text-3xl font-bold mb-4">₹5,999</h4>
                 <p class="text-[#86868b] text-sm mb-8 flex-grow">A professional single-page presence for small shops and freelancers.</p>
-                <a href="#contact" class="btn-apple text-white py-2 text-center text-sm font-medium">Buy</a>
+                <button onclick="openModal()" class="btn-apple text-white py-2 text-center text-sm font-medium">Buy</button>
             </div>
             <div class="bg-white p-10 rounded-[28px] shadow-sm flex flex-col border-2 border-blue-500">
                 <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-2">Growth</span>
                 <h4 class="text-3xl font-bold mb-4">₹14,999</h4>
                 <p class="text-[#86868b] text-sm mb-8 flex-grow">Full 5-page website with WhatsApp integration and Google Maps.</p>
-                <a href="#contact" class="btn-apple text-white py-2 text-center text-sm font-medium">Buy</a>
+                <button onclick="openModal()" class="btn-apple text-white py-2 text-center text-sm font-medium">Buy</button>
             </div>
             <div class="bg-white p-10 rounded-[28px] shadow-sm flex flex-col">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pro</span>
                 <h4 class="text-3xl font-bold mb-4">₹29,999</h4>
                 <p class="text-[#86868b] text-sm mb-8 flex-grow">Custom branding, SEO-ready, and 1 year of hands-off maintenance.</p>
-                <a href="#contact" class="btn-apple text-white py-2 text-center text-sm font-medium">Buy</a>
+                <button onclick="openModal()" class="btn-apple text-white py-2 text-center text-sm font-medium">Buy</button>
             </div>
         </div>
     </section>
@@ -182,10 +235,10 @@
             <h2 class="text-5xl md:text-6xl font-bold mb-8 tracking-tight">Ready to start?</h2>
             <p class="text-xl text-[#86868b] mb-12">No forms. Just chat. Talk to us directly on WhatsApp for a free quote.</p>
             <div class="flex flex-col items-center gap-6">
-                <a href="https://wa.me/yournumber" class="btn-apple text-white px-12 py-4 font-bold text-xl flex items-center">
+                <a href="https://wa.me/917003647494" class="btn-apple text-white px-12 py-4 font-bold text-xl flex items-center">
                     <i class="fa-brands fa-whatsapp mr-3"></i> Message on WhatsApp
                 </a>
-                <a href="tel:+91XXXXXXXXXX" class="text-[#86868b] hover:text-white transition font-medium">Or call us at +91 XXXX XXX XXX</a>
+                <a href="tel:7003647494" class="text-[#86868b] hover:text-white transition font-medium text-lg">Or call us at +91 70036 47494</a>
             </div>
         </div>
     </section>
@@ -203,6 +256,37 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function openModal() {
+            document.getElementById('checkoutModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('checkoutForm').classList.remove('hidden');
+            document.getElementById('modalSuccess').classList.add('hidden');
+        }
+
+        document.getElementById('checkoutForm').onsubmit = function(e) {
+            e.preventDefault();
+            this.classList.add('hidden');
+            document.getElementById('modalSuccess').classList.remove('hidden');
+            setTimeout(() => {
+                closeModal();
+            }, 3000);
+        }
+
+        // Close modal on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('checkoutModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 
 </body>
 </html>
